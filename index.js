@@ -25,7 +25,7 @@ Tweets
 serverApp.post('/sign-up', (req, res)=>{
     const { username, avatar } = req.body;
     
-    console.log(chalk.green(username, avatar));
+    console.log(chalk.red(username, avatar));
     console.log("arr", arrayUsuarios);
     
     const verificarLogin = arrayUsuarios.find((usuario) => { 
@@ -45,8 +45,37 @@ serverApp.post('/sign-up', (req, res)=>{
     console.log("arr", arrayUsuarios);
 });
 
-// serverApp.post();
+serverApp.post('/tweets', (req, res)=>{
+    const { username, tweet } = req.body;
 
-// serverApp.get();
+    console.log(chalk.red(username, tweet));
+    console.log("arr", arrayTweets);
+
+    const verificarTweet = arrayTweets.find((item) => { 
+        return item.username === username && item.tweet === tweet
+    });
+
+    console.log("find", verificarTweet);
+
+    if(verificarTweet !== undefined){
+        res.send('Tweet já existe');
+    }
+    if(verificarTweet === undefined){
+        arrayTweets.push({username, tweet});
+        res.send('OK');
+    }
+
+    console.log("arr", arrayTweets);
+});
+
+serverApp.get('/tweets', (req, res)=>{
+    if(arrayTweets.length >= 0 && arrayTweets.length <= 10){
+        res.send(arrayTweets);
+    }
+    if(arrayTweets.length > 10){
+        let arrayReduzido = arrayTweets.slice(arrayTweets.length - 10, arrayTweets.length);
+        res.send(arrayReduzido);
+    }
+});
 
 serverApp.listen(5000);
