@@ -97,11 +97,20 @@ serverApp.get('/tweets', (req, res)=>{
 
 serverApp.get('/tweets/:idUsuario', (req, res)=>{
     const { idUsuario } = req.params;
-    const tweetsUsuario = arrayTweets.filter((tweet) =>{
-        return tweet.username === idUsuario
+
+    const usuarioEncontrado = arrayUsuarios.find((usuario) =>{
+        return usuario.username === idUsuario
     });
-    console.log(tweetsUsuario);
-    res.send(tweetsUsuario);
+
+    if(usuarioEncontrado === undefined){
+        res.sendStatus(404);
+    }else{
+        const tweetsUsuario = arrayTweets.filter((tweet) =>{
+            return tweet.username === idUsuario
+        });
+        console.log(tweetsUsuario);
+        res.send(tweetsUsuario);
+    }
 });
 
 serverApp.listen(5000);
