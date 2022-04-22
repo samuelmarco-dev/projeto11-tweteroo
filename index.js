@@ -46,7 +46,7 @@ serverApp.post('/sign-up', (req, res)=>{
     if(verificarLogin === undefined){
         arrayUsuarios.push({username, avatar});
         res.send('OK');
-        res.send(res.statusCode(201));
+        // res.send(res.status(201));
     }
 
     console.log("arr", arrayUsuarios);
@@ -81,7 +81,7 @@ serverApp.post('/tweets', (req, res)=>{
         const avatar = avatarCorrespondente.avatar;
         arrayTweets.push({username, tweet, avatar});
         res.send('OK');
-        res.send(res.statusCode(201));
+        // res.send(res.status(201));
     }
 
     console.log("arr", arrayTweets);
@@ -97,13 +97,13 @@ serverApp.get('/tweets', (req, res)=>{
     }
 });
 
-serverApp.get('/tweets/:idUsuario', (req, res)=>{
-    const { idUsuario } = req.params;
-    const tweetsUsuario = arrayTweets.filter((tweet) =>{
-        return tweet.username === idUsuario
-    });
+// serverApp.get('/tweets/:idUsuario', (req, res)=>{
+//     const { idUsuario } = req.params;
+//     const tweetsUsuario = arrayTweets.filter((tweet) =>{
+//         return tweet.username === idUsuario
+//     });
 
-    res.send(tweetsUsuario);
-});
+//     res.send(tweetsUsuario);
+// });
 
 serverApp.listen(5000);
