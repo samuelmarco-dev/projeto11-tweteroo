@@ -9,25 +9,15 @@ serverApp.use(json());
 let [ arrayUsuarios, arrayTweets ] = [[ ], [ ]];
 
 /* 
-Users
-{
-	username: 'bobesponja', 
-	avatar: "https://super.abril.com.br/wp-content/uploads/2020/09/04-09_gato_SITE.jpg?quality=70&strip=info" 
-}
-
-Tweets
-{
-	username: "bobesponja",
-	avatar: "https://super.abril.com.br/wp-content/uploads/2020/09/04-09_gato_SITE.jpg?quality=70&strip=info",
-    tweet: "eu amo o hub",
-}
+    https://s1.static.brasilescola.uol.com.br/be/conteudo/images/imagem-em-lente-convexa.jpg,
+    https://super.abril.com.br/wp-content/uploads/2020/09/04-09_gato_SITE.jpg?quality=70&strip=info
 */
 
 serverApp.post('/sign-up', (req, res)=>{
     const { username, avatar } = req.body;
 
     if(username.length === 0 || avatar.length === 0){
-        res.status(400).send("Preencha todos os campos");
+        res.status(400).send("Todos os campos são obrigatórios!");
         return;
     }
     
@@ -41,7 +31,7 @@ serverApp.post('/sign-up', (req, res)=>{
     console.log("find", verificarLogin);
     
     if(verificarLogin !== undefined){
-        res.status(422).send("Usuário ou foto de perfil já foram cadastrados");
+        res.status(422).send("Usuário ou foto de perfil já foram cadastrados!");
     }
     if(verificarLogin === undefined){
         arrayUsuarios.push({username, avatar});
@@ -55,7 +45,7 @@ serverApp.post('/tweets', (req, res)=>{
     const { username, tweet } = req.body;
 
     if(username.length === 0 || tweet.length === 0){
-        res.status(400).send("Preencha todos os campos");
+        res.status(400).send("Todos os campos são obrigatórios!");
         return;
     }
 
@@ -74,7 +64,7 @@ serverApp.post('/tweets', (req, res)=>{
     console.log("find user", avatarCorrespondente);
 
     if(verificarTweet !== undefined){
-        res.status(422).send("Você já postou esse tweet");
+        res.status(422).send("Você já postou esse tweet!");
     }
     if(verificarTweet === undefined){
         const avatar = avatarCorrespondente.avatar;
@@ -103,13 +93,19 @@ serverApp.get('/tweets/:idUsuario', (req, res)=>{
     });
 
     if(usuarioEncontrado === undefined){
-        res.sendStatus(404).send("Usuário não encontrado");
-    }else{
+        res.status(404).send("Usuário não encontrado!");
+    }
+    if(usuarioEncontrado !== undefined){
         const tweetsUsuario = arrayTweets.filter((tweet) =>{
             return tweet.username === idUsuario
         });
         console.log(tweetsUsuario);
-        res.send(tweetsUsuario);
+        if(tweetsUsuario.length === 0){
+            res.status(201).send("Usuário não possui tweets!");
+        }
+        if(tweetsUsuario.length > 0){
+            res.status(201).send(tweetsUsuario);
+        }
     }
 });
 
