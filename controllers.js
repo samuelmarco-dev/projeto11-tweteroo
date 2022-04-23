@@ -2,6 +2,9 @@ let [ arrayUsuarios, arrayTweets ] = [[ ], [ ]];
 
 function postSignUp(req, res){
     const { username, avatar } = req.body;
+    
+    const tipoAvatar = (avatar.includes('jpg')) || (avatar.includes('png')) || (avatar.includes('gif')) || (avatar.includes('svg') || (avatar.includes('jpeg')));
+    const validarAvatar = (avatar.includes("http")) && (tipoAvatar);
 
     if(username.length === 0 || avatar.length === 0){
         res.status(400).send("Todos os campos são obrigatórios!");
@@ -11,13 +14,18 @@ function postSignUp(req, res){
     const verificarLogin = arrayUsuarios.find((usuario) => { 
         return usuario.username === username || usuario.avatar === avatar
     });
-    
-    if(verificarLogin !== undefined){
-        res.status(422).send("Usuário ou foto de perfil já foram cadastrados!");
-    }
-    if(verificarLogin === undefined){
-        arrayUsuarios.push({username, avatar});
-        res.status(201).send('OK');
+
+    if(!validarAvatar){
+        res.status(400).send("O avatar deve ser uma URL válida!");
+        return;
+    }else{
+        if(verificarLogin !== undefined){
+            res.status(422).send("Usuário ou foto de perfil já foram cadastrados!");
+        }
+        if(verificarLogin === undefined){
+            arrayUsuarios.push({username, avatar});
+            res.status(201).send('OK');
+        }
     }
 }
 
