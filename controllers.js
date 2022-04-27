@@ -57,10 +57,10 @@ function postTweets(req, res){
 
 function getTweets(req, res){
     if(arrayTweets.length >= 0 && arrayTweets.length <= 10){
-        res.send(arrayTweets);
+        res.send([...arrayTweets.reverse()]);
     }
     if(arrayTweets.length > 10){
-        let arrayReduzido = arrayTweets.slice(arrayTweets.length - 10, arrayTweets.length);
+        let arrayReduzido = [...arrayTweets.reverse().splice(0, 10)]
         res.send(arrayReduzido);
     }
 }
